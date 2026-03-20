@@ -7,65 +7,94 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-:root{--bg:#0e0e0e;--surface:#1a1a1a;--card:#222;--border:#2e2e2e;--accent:#00c896;--blue:#0084ff;--text:#f5f5f5;--muted:#888;--red:#ff4757;}
+:root{--bg:#0e0e0e;--surface:#1a1a1a;--card:#222;--border:#2e2e2e;--accent:#00c896;--blue:#0084ff;--text:#f5f5f5;--muted:#888;--red:#ff4757;--purple:#9c27b0;--pink:#e91e8c;}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;max-width:480px;margin:0 auto;height:100vh;overflow:hidden;}
 .screen{display:none;width:100%;height:100vh;flex-direction:column;overflow:hidden;}
 .screen.active{display:flex;}
+
+/* LOADING */
 #loadScreen{background:var(--bg);align-items:center;justify-content:center;flex-direction:column;gap:16px;}
-.load-logo{font-size:52px;}
-.load-text{font-size:24px;font-weight:800;color:var(--accent);}
 .load-spin{width:32px;height:32px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg)}}
-#authScreen{background:var(--bg);align-items:center;justify-content:center;padding:24px;}
-.logo-wrap{text-align:center;margin-bottom:28px;}
-.logo-icon{font-size:52px;margin-bottom:8px;}
-.logo-text{font-size:30px;font-weight:800;color:var(--accent);}
-.logo-sub{font-size:13px;color:var(--muted);margin-top:4px;}
-.auth-box{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:24px;}
-.auth-tabs{display:flex;background:var(--bg);border-radius:12px;padding:3px;margin-bottom:20px;}
-.atab{flex:1;text-align:center;padding:10px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;color:var(--muted);transition:all 0.2s;}
+
+/* AUTH */
+#authScreen{background:var(--bg);align-items:center;justify-content:center;padding:20px;overflow-y:auto;}
+.logo-wrap{text-align:center;margin-bottom:24px;}
+.logo-icon{font-size:48px;margin-bottom:6px;}
+.logo-text{font-size:28px;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.logo-sub{font-size:12px;color:var(--muted);margin-top:3px;}
+.auth-box{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:22px;}
+.auth-tabs{display:flex;background:var(--bg);border-radius:12px;padding:3px;margin-bottom:18px;}
+.atab{flex:1;text-align:center;padding:9px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;color:var(--muted);transition:all 0.2s;}
 .atab.active{background:var(--accent);color:#000;}
-.lbl{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:0.5px;margin-bottom:5px;display:block;}
-.inp{width:100%;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:13px 14px;color:var(--text);font-family:'Inter',sans-serif;font-size:14px;outline:none;margin-bottom:12px;transition:border-color 0.2s;}
+.lbl{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:0.5px;margin-bottom:4px;display:block;}
+.inp{width:100%;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 14px;color:var(--text);font-family:'Inter',sans-serif;font-size:14px;outline:none;margin-bottom:10px;transition:border-color 0.2s;}
 .inp:focus{border-color:var(--accent);}
 .inp::placeholder{color:var(--muted);font-size:13px;}
-.auth-btn{width:100%;padding:14px;background:var(--accent);color:#000;border:none;border-radius:12px;font-family:'Inter',sans-serif;font-weight:800;font-size:15px;cursor:pointer;transition:all 0.2s;margin-top:2px;}
-.auth-btn:disabled{opacity:0.4;cursor:default;}
-.auth-err{font-size:12px;color:var(--red);text-align:center;margin-top:10px;min-height:18px;}
-.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
-.topbar-logo{font-size:20px;font-weight:800;color:var(--accent);}
-.topbar-right{display:flex;gap:8px;}
-.ico-btn{width:36px;height:36px;background:var(--card);border:1px solid var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:17px;position:relative;transition:all 0.15s;}
+.auth-btn{width:100%;padding:13px;background:var(--accent);color:#000;border:none;border-radius:12px;font-family:'Inter',sans-serif;font-weight:800;font-size:15px;cursor:pointer;margin-top:2px;}
+.auth-btn:disabled{opacity:0.4;}
+.auth-err{font-size:12px;color:var(--red);text-align:center;margin-top:8px;min-height:16px;}
+
+/* TOPBAR */
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:10px 14px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.topbar-logo{font-size:19px;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.topbar-right{display:flex;gap:7px;}
+.ico-btn{width:34px;height:34px;background:var(--card);border:1px solid var(--border);border-radius:9px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;position:relative;}
 .ico-btn:active{transform:scale(0.93);}
-.badge{position:absolute;top:-5px;right:-5px;width:17px;height:17px;background:var(--red);border-radius:50%;font-size:9px;font-weight:800;color:#fff;display:flex;align-items:center;justify-content:center;border:2px solid var(--bg);}
+.badge{position:absolute;top:-4px;right:-4px;width:16px;height:16px;background:var(--red);border-radius:50%;font-size:9px;font-weight:800;color:#fff;display:flex;align-items:center;justify-content:center;border:2px solid var(--bg);}
+
+/* BOTTOM NAV */
 .bnav{background:var(--surface);border-top:1px solid var(--border);display:flex;flex-shrink:0;}
-.bni{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:9px 0 7px;cursor:pointer;gap:3px;}
-.bni .ni{font-size:20px;}
+.bni{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px 0 6px;cursor:pointer;gap:2px;}
+.bni .ni{font-size:19px;}
 .bni .nl{font-size:10px;font-weight:600;color:var(--muted);}
 .bni.active .nl{color:var(--accent);}
+
+/* PAGES */
 .page{display:none;flex:1;overflow-y:auto;flex-direction:column;}
 .page.active{display:flex;}
+
+/* STORIES ROW */
+.stories-wrap{padding:12px 0;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0;}
+.stories-row{display:flex;gap:12px;padding:0 14px;overflow-x:auto;scrollbar-width:none;}
+.stories-row::-webkit-scrollbar{display:none;}
+.story-item{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;flex-shrink:0;}
+.story-ring{width:58px;height:58px;border-radius:50%;padding:2px;background:linear-gradient(45deg,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5);}
+.story-ring.seen{background:var(--border);}
+.story-ring.add{background:transparent;border:2px dashed var(--border);}
+.story-inner{width:100%;height:100%;border-radius:50%;background:var(--bg);padding:2px;display:flex;align-items:center;justify-content:center;overflow:hidden;font-size:22px;font-weight:800;color:#fff;}
+.story-inner img{width:100%;height:100%;border-radius:50%;object-fit:cover;}
+.story-name{font-size:10px;color:var(--text);text-align:center;width:60px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:500;}
+
+/* POSTS */
+.post{background:var(--surface);border-bottom:1px solid var(--border);margin-bottom:0;}
+.post-header{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;}
+.post-user{display:flex;align-items:center;gap:10px;cursor:pointer;}
+.post-av{width:36px;height:36px;border-radius:50%;background:linear-gradient(45deg,#feda75,#fa7e1e,#d62976);padding:2px;flex-shrink:0;}
+.post-av-inner{width:100%;height:100%;border-radius:50%;background:var(--bg);padding:1px;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff;}
+.post-av-inner img{width:100%;height:100%;border-radius:50%;object-fit:cover;}
+.post-uname{font-size:13px;font-weight:700;}
+.post-time{font-size:11px;color:var(--muted);}
+.post-img{width:100%;max-height:400px;object-fit:cover;display:block;background:var(--card);}
+.post-no-img{width:100%;padding:20px 14px;background:linear-gradient(135deg,#1a1a2e,#16213e);min-height:80px;display:flex;align-items:center;}
+.post-no-img p{font-size:16px;font-weight:600;color:#fff;line-height:1.5;}
+.post-actions{display:flex;align-items:center;justify-content:space-between;padding:8px 14px 4px;}
+.post-acts-left{display:flex;gap:14px;}
+.post-act{display:flex;align-items:center;gap:4px;cursor:pointer;font-size:13px;color:var(--muted);font-weight:600;}
+.post-act .ico{font-size:20px;}
+.post-act.liked .ico{color:var(--red);}
+.post-caption{font-size:13px;padding:0 14px 8px;line-height:1.5;color:var(--text);}
+.post-caption b{font-weight:700;margin-right:4px;}
+.post-time-sm{font-size:10px;color:var(--muted);padding:0 14px 10px;text-transform:uppercase;letter-spacing:0.3px;}
+
+/* FEED SEARCH */
 .srch-bar{padding:10px 14px;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0;}
 .srch-inner{background:var(--card);border-radius:12px;display:flex;align-items:center;gap:8px;padding:9px 13px;}
 .srch-inner input{flex:1;background:transparent;border:none;outline:none;font-family:'Inter',sans-serif;font-size:14px;color:var(--text);}
 .srch-inner input::placeholder{color:var(--muted);}
-.chat-list{flex:1;overflow-y:auto;}
-.ci{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.15s;}
-.ci:active{background:var(--surface);}
-.ci.unread{background:rgba(0,200,150,0.04);}
-.av{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:800;color:#fff;flex-shrink:0;position:relative;}
-.odot{position:absolute;bottom:1px;right:1px;width:12px;height:12px;background:var(--accent);border-radius:50%;border:2px solid var(--bg);}
-.ci-info{flex:1;min-width:0;}
-.ci-name{font-size:14px;font-weight:700;margin-bottom:3px;}
-.ci-prev{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.ci-meta{display:flex;flex-direction:column;align-items:flex-end;gap:4px;}
-.ci-time{font-size:11px;color:var(--muted);}
-.ci-unread{background:var(--accent);color:#000;font-size:10px;font-weight:800;padding:2px 7px;border-radius:20px;}
-.empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--muted);gap:10px;padding:40px;text-align:center;}
-.empty .eico{font-size:52px;}
-.empty p{font-size:14px;font-weight:600;}
-.empty small{font-size:12px;}
+
+/* FRIENDS */
 .ftabs{display:flex;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0;}
 .ftab{flex:1;text-align:center;padding:12px;font-size:13px;font-weight:700;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s;}
 .ftab.active{color:var(--accent);border-bottom-color:var(--accent);}
@@ -80,53 +109,118 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;max-w
 .fb.r{background:var(--red);color:#fff;}
 .fb.b{background:var(--blue);color:#fff;}
 .fb.gr{background:var(--card);color:var(--muted);border:1px solid var(--border);}
+
+/* SEARCH PAGE */
 .sp-wrap{padding:12px 14px;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0;}
-.sp-inner{background:var(--card);border:1px solid var(--border);border-radius:14px;display:flex;align-items:center;gap:10px;padding:12px 14px;}
+.sp-inner{background:var(--card);border:1px solid var(--border);border-radius:14px;display:flex;align-items:center;gap:10px;padding:11px 14px;}
 .sp-inner input{flex:1;background:transparent;border:none;outline:none;font-family:'Inter',sans-serif;font-size:15px;color:var(--text);}
 .sp-inner input::placeholder{color:var(--muted);}
 .sr-item{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border);}
 .sr-info{flex:1;}
 .sr-name{font-size:14px;font-weight:700;}
 .sr-user{font-size:12px;color:var(--muted);}
-.sh{text-align:center;padding:40px 20px;color:var(--muted);}
-.sh .sico{font-size:44px;margin-bottom:10px;}
-.prof-wrap{flex:1;overflow-y:auto;}
-.prof-cover{height:90px;background:linear-gradient(135deg,#00c896,#0084ff);position:relative;}
-.prof-avbig{width:72px;height:72px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:800;color:#fff;position:absolute;bottom:-36px;left:16px;border:3px solid var(--bg);}
-.prof-info{padding:44px 16px 16px;}
-.prof-fname{font-size:21px;font-weight:800;margin-bottom:2px;}
-.prof-uname{font-size:14px;color:var(--muted);margin-bottom:12px;}
-.prof-stats{display:flex;background:var(--surface);border-radius:14px;overflow:hidden;margin-bottom:14px;border:1px solid var(--border);}
-.ps{flex:1;text-align:center;padding:14px 8px;border-right:1px solid var(--border);}
+
+/* PROFILE */
+.prof-cover{height:100px;background:linear-gradient(135deg,#00c896,#0084ff);position:relative;flex-shrink:0;}
+.prof-avbig-wrap{position:absolute;bottom:-38px;left:16px;}
+.prof-avbig{width:76px;height:76px;border-radius:50%;background:linear-gradient(45deg,#feda75,#fa7e1e,#d62976);padding:3px;border:3px solid var(--bg);}
+.prof-avbig-inner{width:100%;height:100%;border-radius:50%;background:var(--card);overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:800;color:#fff;}
+.prof-avbig-inner img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+.prof-info{padding:46px 16px 12px;}
+.prof-fname{font-size:20px;font-weight:800;margin-bottom:1px;}
+.prof-uname{font-size:13px;color:var(--muted);margin-bottom:4px;}
+.prof-bio{font-size:13px;color:var(--text);margin-bottom:6px;line-height:1.5;}
+.prof-music{font-size:12px;color:var(--accent);margin-bottom:10px;display:flex;align-items:center;gap:5px;}
+.prof-badge{display:inline-block;font-size:10px;padding:2px 8px;border-radius:10px;font-weight:700;margin-bottom:10px;}
+.prof-badge.public{background:rgba(0,200,150,0.15);color:var(--accent);}
+.prof-badge.private{background:rgba(255,71,87,0.15);color:var(--red);}
+.prof-stats{display:flex;background:var(--surface);border-radius:14px;overflow:hidden;margin-bottom:12px;border:1px solid var(--border);}
+.ps{flex:1;text-align:center;padding:12px 6px;border-right:1px solid var(--border);}
 .ps:last-child{border-right:none;}
-.ps-num{font-size:18px;font-weight:800;display:block;}
-.ps-lbl{font-size:11px;color:var(--muted);font-weight:600;}
-.prof-btns{display:flex;gap:8px;margin-bottom:16px;}
-.pb{flex:1;padding:10px;border-radius:12px;font-family:'Inter',sans-serif;font-weight:700;font-size:14px;cursor:pointer;border:none;text-align:center;}
+.ps-num{font-size:17px;font-weight:800;display:block;}
+.ps-lbl{font-size:10px;color:var(--muted);font-weight:600;}
+.prof-btns{display:flex;gap:8px;margin-bottom:14px;}
+.pb{flex:1;padding:9px;border-radius:12px;font-family:'Inter',sans-serif;font-weight:700;font-size:13px;cursor:pointer;border:none;text-align:center;}
 .pb.p{background:var(--accent);color:#000;}
 .pb.o{background:transparent;border:1px solid var(--border);color:var(--text);}
-.logout-btn{width:calc(100% - 32px);margin:0 16px 24px;padding:13px;background:var(--red);color:#fff;border:none;border-radius:12px;font-family:'Inter',sans-serif;font-weight:700;font-size:14px;cursor:pointer;}
+.prof-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-bottom:60px;}
+.prof-grid-item{aspect-ratio:1;background:var(--card);overflow:hidden;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:28px;}
+.prof-grid-item img{width:100%;height:100%;object-fit:cover;}
+
+/* CHAT */
 #chatWin{display:none;position:fixed;inset:0;background:var(--bg);z-index:500;flex-direction:column;max-width:480px;margin:0 auto;}
 #chatWin.open{display:flex;}
 .cw-top{background:var(--surface);border-bottom:1px solid var(--border);padding:10px 14px;display:flex;align-items:center;gap:12px;flex-shrink:0;}
-.back-btn{width:34px;height:34px;background:var(--card);border:1px solid var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:17px;}
+.back-btn{width:32px;height:32px;background:var(--card);border:1px solid var(--border);border-radius:9px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;}
 .cw-uinfo{flex:1;}
-.cw-name{font-size:15px;font-weight:700;}
+.cw-name{font-size:14px;font-weight:700;}
 .cw-status{font-size:11px;color:var(--accent);}
-.msgs{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:8px;}
+.msgs{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:7px;}
 .mr{display:flex;flex-direction:column;}
 .mr.me{align-items:flex-end;}
 .mr.other{align-items:flex-start;}
-.mb{max-width:75%;padding:10px 14px;border-radius:18px;font-size:14px;line-height:1.5;word-break:break-word;}
+.mb{max-width:75%;padding:9px 13px;border-radius:18px;font-size:14px;line-height:1.5;word-break:break-word;}
 .mr.me .mb{background:var(--blue);color:#fff;border-bottom-right-radius:4px;}
 .mr.other .mb{background:var(--card);color:var(--text);border-bottom-left-radius:4px;}
-.mt{font-size:10px;color:var(--muted);margin-top:3px;padding:0 4px;}
-.dd{text-align:center;font-size:11px;color:var(--muted);padding:6px 16px;background:rgba(255,255,255,0.03);border-radius:20px;margin:4px auto;}
-.msg-bar{background:var(--surface);border-top:1px solid var(--border);padding:10px 12px;display:flex;align-items:center;gap:8px;flex-shrink:0;}
-.msg-inp{flex:1;background:var(--card);border:1px solid var(--border);border-radius:24px;padding:10px 16px;color:var(--text);font-family:'Inter',sans-serif;font-size:14px;outline:none;resize:none;max-height:100px;line-height:1.4;}
+.mt{font-size:10px;color:var(--muted);margin-top:2px;padding:0 3px;}
+.dd{text-align:center;font-size:11px;color:var(--muted);padding:5px 14px;background:rgba(255,255,255,0.03);border-radius:20px;margin:3px auto;}
+.msg-bar{background:var(--surface);border-top:1px solid var(--border);padding:9px 11px;display:flex;align-items:center;gap:7px;flex-shrink:0;}
+.msg-inp{flex:1;background:var(--card);border:1px solid var(--border);border-radius:22px;padding:9px 15px;color:var(--text);font-family:'Inter',sans-serif;font-size:14px;outline:none;resize:none;max-height:90px;line-height:1.4;}
 .msg-inp::placeholder{color:var(--muted);}
-.send-btn{width:42px;height:42px;background:var(--blue);border:none;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;flex-shrink:0;transition:all 0.15s;}
-.send-btn:active{transform:scale(0.9);}
+.send-btn{width:40px;height:40px;background:var(--blue);border:none;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:17px;flex-shrink:0;}
+
+/* STORY VIEWER */
+#storyViewer{display:none;position:fixed;inset:0;background:#000;z-index:800;flex-direction:column;max-width:480px;margin:0 auto;}
+#storyViewer.open{display:flex;}
+.sv-progress{display:flex;gap:3px;padding:10px 12px 0;}
+.sv-bar{flex:1;height:2px;background:rgba(255,255,255,0.3);border-radius:2px;overflow:hidden;}
+.sv-fill{height:100%;background:#fff;width:0%;transition:width 5s linear;}
+.sv-top{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;}
+.sv-user{display:flex;align-items:center;gap:9px;}
+.sv-av{width:32px;height:32px;border-radius:50%;border:2px solid #fff;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;}
+.sv-av img{width:100%;height:100%;object-fit:cover;}
+.sv-uname{color:#fff;font-size:13px;font-weight:700;}
+.sv-time{color:rgba(255,255,255,0.7);font-size:11px;}
+.sv-close{color:#fff;font-size:26px;cursor:pointer;}
+.sv-body{flex:1;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+.sv-img{max-width:100%;max-height:100%;object-fit:contain;}
+.sv-text{color:#fff;font-size:18px;font-weight:600;text-align:center;padding:20px;text-shadow:0 2px 10px rgba(0,0,0,0.8);}
+.sv-music{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.6);color:#fff;padding:8px 16px;border-radius:20px;font-size:12px;font-weight:600;display:flex;align-items:center;gap:6px;backdrop-filter:blur(10px);}
+
+/* ADD STORY/POST OVERLAY */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:600;justify-content:center;align-items:flex-start;overflow-y:auto;padding:20px 0;backdrop-filter:blur(6px);}
+.overlay.show{display:flex;}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:20px;width:93%;max-width:420px;padding:22px;margin:auto;position:relative;animation:slideUp 0.25s ease;}
+@keyframes slideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.modal-close{position:absolute;top:13px;right:15px;background:none;border:none;color:var(--muted);font-size:21px;cursor:pointer;}
+.modal h2{font-size:20px;font-weight:800;margin-bottom:16px;color:#fff;}
+.modal-btn{width:100%;padding:13px;border:none;border-radius:12px;font-family:'Inter',sans-serif;font-weight:800;font-size:14px;cursor:pointer;margin-bottom:8px;}
+.modal-btn.green{background:var(--accent);color:#000;}
+.modal-btn.ghost{background:transparent;border:1px solid var(--border);color:var(--muted);}
+
+/* SETTINGS PAGE */
+#settingsPage{display:none;position:fixed;inset:0;background:var(--bg);z-index:700;flex-direction:column;max-width:480px;margin:0 auto;overflow-y:auto;}
+#settingsPage.open{display:flex;}
+.settings-section{margin:0 16px 20px;}
+.settings-title{font-size:12px;font-weight:700;color:var(--muted);letter-spacing:0.5px;margin-bottom:8px;padding:0 4px;}
+.settings-item{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:13px 16px;display:flex;align-items:center;justify-content:space-between;margin-bottom:2px;cursor:pointer;}
+.settings-item:active{background:var(--card);}
+.si-left{display:flex;align-items:center;gap:12px;}
+.si-icon{font-size:20px;width:32px;text-align:center;}
+.si-text h4{font-size:14px;font-weight:600;}
+.si-text p{font-size:12px;color:var(--muted);}
+.si-arrow{color:var(--muted);font-size:16px;}
+.toggle{width:44px;height:24px;background:var(--border);border-radius:12px;position:relative;cursor:pointer;transition:background 0.2s;flex-shrink:0;}
+.toggle.on{background:var(--accent);}
+.toggle::after{content:'';position:absolute;top:2px;left:2px;width:20px;height:20px;background:#fff;border-radius:50%;transition:left 0.2s;}
+.toggle.on::after{left:22px;}
+.logout-btn{width:calc(100% - 32px);margin:8px 16px 24px;padding:13px;background:var(--red);color:#fff;border:none;border-radius:12px;font-family:'Inter',sans-serif;font-weight:700;font-size:14px;cursor:pointer;}
+
+/* PROFILE VIEW PAGE */
+#profileViewPage{display:none;position:fixed;inset:0;background:var(--bg);z-index:600;flex-direction:column;max-width:480px;margin:0 auto;overflow-y:auto;}
+#profileViewPage.open{display:flex;}
+
+/* NOTIF PANEL */
 #notifPanel{display:none;position:fixed;inset:0;background:var(--bg);z-index:400;flex-direction:column;max-width:480px;margin:0 auto;}
 #notifPanel.open{display:flex;}
 .panel-top{background:var(--surface);border-bottom:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;gap:12px;flex-shrink:0;}
@@ -134,22 +228,43 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;max-w
 .ni-item{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border);}
 .ni-item.unread{background:rgba(0,200,150,0.04);}
 .ni-text{flex:1;font-size:13px;line-height:1.5;}
-.ni-text b{color:var(--accent);}
 .ni-time{font-size:11px;color:var(--muted);}
-.toast{position:fixed;bottom:75px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--card);border:1px solid var(--border);color:var(--text);padding:10px 20px;border-radius:20px;font-size:13px;font-weight:600;z-index:9999;opacity:0;transition:all 0.3s;white-space:nowrap;pointer-events:none;}
+
+/* CHAT LIST */
+.chat-list{flex:1;overflow-y:auto;}
+.ci{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.15s;}
+.ci:active{background:var(--surface);}
+.ci.unread{background:rgba(0,200,150,0.04);}
+.av{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:#fff;flex-shrink:0;position:relative;}
+.odot{position:absolute;bottom:1px;right:1px;width:11px;height:11px;background:var(--accent);border-radius:50%;border:2px solid var(--bg);}
+.ci-info{flex:1;min-width:0;}
+.ci-name{font-size:14px;font-weight:700;margin-bottom:2px;}
+.ci-prev{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ci-meta{display:flex;flex-direction:column;align-items:flex-end;gap:4px;}
+.ci-time{font-size:11px;color:var(--muted);}
+.ci-unread{background:var(--accent);color:#000;font-size:10px;font-weight:800;padding:2px 6px;border-radius:20px;}
+.empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--muted);gap:10px;padding:40px;text-align:center;}
+.empty .eico{font-size:50px;}
+.empty p{font-size:14px;font-weight:600;}
+.empty small{font-size:12px;}
+
+.toast{position:fixed;bottom:72px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--card);border:1px solid var(--border);color:var(--text);padding:9px 18px;border-radius:20px;font-size:13px;font-weight:600;z-index:9999;opacity:0;transition:all 0.3s;white-space:nowrap;pointer-events:none;}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 ::-webkit-scrollbar{width:3px;}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px;}
+textarea.inp{resize:vertical;min-height:60px;}
 </style>
 </head>
 <body>
 
+<!-- LOADING -->
 <div id="loadScreen" class="screen active">
-  <div class="load-logo">💬</div>
-  <div class="load-text">SafeChat</div>
+  <div style="font-size:48px;margin-bottom:8px;">💬</div>
+  <div style="font-size:22px;font-weight:800;background:linear-gradient(135deg,#00c896,#0084ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">SafeChat</div>
   <div class="load-spin"></div>
 </div>
 
+<!-- AUTH -->
 <div id="authScreen" class="screen">
   <div class="logo-wrap">
     <div class="logo-icon">💬</div>
@@ -181,20 +296,35 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;max-w
   </div>
 </div>
 
+<!-- MAIN APP -->
 <div id="mainScreen" class="screen">
   <div class="topbar">
     <div class="topbar-logo">💬 SafeChat</div>
     <div class="topbar-right">
       <div class="ico-btn" onclick="openNotif()">🔔<div class="badge" id="nbadge" style="display:none">0</div></div>
-      <div class="ico-btn" onclick="showPage('profPage',3)">👤</div>
+      <div class="ico-btn" onclick="openSettings()">⚙️</div>
     </div>
   </div>
-  <div class="page active" id="chatsPage">
+
+  <!-- HOME PAGE -->
+  <div class="page active" id="homePage">
+    <!-- STORIES -->
+    <div class="stories-wrap">
+      <div class="stories-row" id="storiesRow"></div>
+    </div>
+    <!-- POSTS FEED -->
+    <div style="flex:1;overflow-y:auto;" id="postsFeed"></div>
+  </div>
+
+  <!-- CHATS PAGE -->
+  <div class="page" id="chatsPage">
     <div class="srch-bar">
       <div class="srch-inner"><span>🔍</span><input type="text" placeholder="Search conversations..." oninput="filterChats(this.value)"></div>
     </div>
     <div class="chat-list" id="chatList"></div>
   </div>
+
+  <!-- FRIENDS PAGE -->
   <div class="page" id="friendsPage">
     <div class="ftabs">
       <div class="ftab active" id="ft1" onclick="switchFTab('friends')">Friends <span id="fcnt"></span></div>
@@ -202,33 +332,38 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;max-w
     </div>
     <div style="flex:1;overflow-y:auto" id="friendsList"></div>
   </div>
+
+  <!-- SEARCH PAGE -->
   <div class="page" id="searchPage">
     <div class="sp-wrap">
-      <div class="sp-inner"><span>🔍</span><input type="text" id="sinp" placeholder="Search by username or name..." oninput="doSearch(this.value)"></div>
+      <div class="sp-inner"><span>🔍</span><input type="text" id="sinp" placeholder="Search username or name..." oninput="doSearch(this.value)"></div>
     </div>
     <div style="flex:1;overflow-y:auto" id="sResults">
-      <div class="sh"><div class="sico">🔎</div><p style="font-size:14px;font-weight:600;margin-bottom:4px">Dost ko dhundho</p><small style="font-size:12px;color:var(--muted)">Username ya naam se search karo</small></div>
+      <div style="text-align:center;padding:40px 20px;color:var(--muted)"><div style="font-size:44px;margin-bottom:10px">🔎</div><p style="font-size:14px;font-weight:600">Dost ko dhundho</p></div>
     </div>
   </div>
+
+  <!-- PROFILE PAGE -->
   <div class="page" id="profPage">
-    <div class="prof-wrap" id="profWrap"></div>
+    <div id="myProfWrap" style="flex:1;overflow-y:auto;"></div>
   </div>
+
+  <!-- BOTTOM NAV -->
   <div class="bnav">
-    <div class="bni active" id="n0" onclick="showPage('chatsPage',0)"><span class="ni">💬</span><span class="nl">Chats</span></div>
-    <div class="bni" id="n1" onclick="showPage('friendsPage',1)"><span class="ni">👥</span><span class="nl">Friends</span></div>
-    <div class="bni" id="n2" onclick="showPage('searchPage',2)"><span class="ni">🔍</span><span class="nl">Search</span></div>
-    <div class="bni" id="n3" onclick="showPage('profPage',3)"><span class="ni">👤</span><span class="nl">Profile</span></div>
+    <div class="bni active" id="n0" onclick="showPage('homePage',0)"><span class="ni">🏠</span><span class="nl">Home</span></div>
+    <div class="bni" id="n1" onclick="showPage('chatsPage',1)"><span class="ni">💬</span><span class="nl">Chats</span></div>
+    <div class="bni" id="n2" onclick="showPage('friendsPage',2)"><span class="ni">👥</span><span class="nl">Friends</span></div>
+    <div class="bni" id="n3" onclick="showPage('searchPage',3)"><span class="ni">🔍</span><span class="nl">Search</span></div>
+    <div class="bni" id="n4" onclick="showPage('profPage',4)"><span class="ni">👤</span><span class="nl">Profile</span></div>
   </div>
 </div>
 
+<!-- CHAT WINDOW -->
 <div id="chatWin">
   <div class="cw-top">
     <div class="back-btn" onclick="closeChat()">←</div>
-    <div class="av" id="cwAv" style="width:36px;height:36px;font-size:14px">?</div>
-    <div class="cw-uinfo">
-      <div class="cw-name" id="cwName">Name</div>
-      <div class="cw-status" id="cwStat">● online</div>
-    </div>
+    <div class="av" id="cwAv" style="width:34px;height:34px;font-size:13px">?</div>
+    <div class="cw-uinfo"><div class="cw-name" id="cwName">Name</div><div class="cw-status" id="cwStat">● online</div></div>
   </div>
   <div class="msgs" id="msgs"></div>
   <div class="msg-bar">
@@ -237,6 +372,105 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;max-w
   </div>
 </div>
 
+<!-- STORY VIEWER -->
+<div id="storyViewer">
+  <div class="sv-progress" id="svProgress"></div>
+  <div class="sv-top">
+    <div class="sv-user">
+      <div class="sv-av" id="svAv">?</div>
+      <div><div class="sv-uname" id="svUname">User</div><div class="sv-time" id="svTime">now</div></div>
+    </div>
+    <div class="sv-close" onclick="closeStory()">✕</div>
+  </div>
+  <div class="sv-body" id="svBody"></div>
+</div>
+
+<!-- ADD STORY MODAL -->
+<div class="overlay" id="addStoryModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('addStoryModal')">✕</button>
+    <h2>📸 Add Story</h2>
+    <label class="lbl">IMAGE URL (optional)</label>
+    <input class="inp" id="storyImg" placeholder="Image ka link paste karo (optional)">
+    <label class="lbl">CAPTION / TEXT</label>
+    <textarea class="inp" id="storyText" placeholder="Kuch likho..." rows="3"></textarea>
+    <label class="lbl">🎵 MUSIC (YouTube link - optional)</label>
+    <input class="inp" id="storyMusic" placeholder="YouTube link paste karo">
+    <button class="modal-btn green" onclick="postStory()">✅ Post Story</button>
+    <button class="modal-btn ghost" onclick="closeModal('addStoryModal')">Cancel</button>
+  </div>
+</div>
+
+<!-- ADD POST MODAL -->
+<div class="overlay" id="addPostModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('addPostModal')">✕</button>
+    <h2>📝 New Post</h2>
+    <label class="lbl">IMAGE URL (optional)</label>
+    <input class="inp" id="postImg" placeholder="Image ka link paste karo (optional)">
+    <label class="lbl">CAPTION *</label>
+    <textarea class="inp" id="postCaption" placeholder="Apni memory share karo..." rows="4"></textarea>
+    <button class="modal-btn green" onclick="submitPost()">✅ Post Karo</button>
+    <button class="modal-btn ghost" onclick="closeModal('addPostModal')">Cancel</button>
+  </div>
+</div>
+
+<!-- SETTINGS PAGE -->
+<div id="settingsPage">
+  <div class="panel-top" style="padding:12px 16px;">
+    <div class="back-btn" onclick="closeSettings()">←</div>
+    <div class="panel-title">⚙️ Settings</div>
+  </div>
+  <div style="flex:1;overflow-y:auto;padding-top:16px;" id="settingsContent"></div>
+</div>
+
+<!-- EDIT PROFILE MODAL -->
+<div class="overlay" id="editProfileModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('editProfileModal')">✕</button>
+    <h2>✏️ Edit Profile</h2>
+    <label class="lbl">FULL NAME</label>
+    <input class="inp" id="epName" placeholder="Poora naam">
+    <label class="lbl">USERNAME</label>
+    <input class="inp" id="epUsername" placeholder="username">
+    <label class="lbl">BIO</label>
+    <textarea class="inp" id="epBio" placeholder="Apne baare mein likho..." rows="3"></textarea>
+    <label class="lbl">🎵 MUSIC IN BIO (YouTube link)</label>
+    <input class="inp" id="epMusic" placeholder="YouTube link paste karo">
+    <label class="lbl">PROFILE PICTURE URL</label>
+    <input class="inp" id="epPic" placeholder="Image link paste karo">
+    <button class="modal-btn green" onclick="saveProfile()">💾 Save Changes</button>
+    <button class="modal-btn ghost" onclick="closeModal('editProfileModal')">Cancel</button>
+  </div>
+</div>
+
+<!-- CHANGE PASSWORD MODAL -->
+<div class="overlay" id="changePwModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('changePwModal')">✕</button>
+    <h2>🔐 Change Password</h2>
+    <label class="lbl">OLD PASSWORD</label>
+    <input class="inp" type="password" id="oldPw" placeholder="Purana password">
+    <label class="lbl">NEW PASSWORD</label>
+    <input class="inp" type="password" id="newPw" placeholder="Naya password (min 4)">
+    <label class="lbl">CONFIRM NEW PASSWORD</label>
+    <input class="inp" type="password" id="confPw" placeholder="Dobara likho">
+    <button class="modal-btn green" onclick="changePassword()">✅ Change Password</button>
+    <button class="modal-btn ghost" onclick="closeModal('changePwModal')">Cancel</button>
+    <div class="auth-err" id="pwErr"></div>
+  </div>
+</div>
+
+<!-- PROFILE VIEW PAGE -->
+<div id="profileViewPage">
+  <div class="panel-top">
+    <div class="back-btn" onclick="closeProfileView()">←</div>
+    <div class="panel-title" id="pvTitle">Profile</div>
+  </div>
+  <div id="pvContent" style="flex:1;overflow-y:auto;"></div>
+</div>
+
+<!-- NOTIF PANEL -->
 <div id="notifPanel">
   <div class="panel-top">
     <div class="back-btn" onclick="closeNotif()">←</div>
@@ -257,11 +491,17 @@ function gc(id){let h=0;for(let c of(id||'a'))h+=c.charCodeAt(0);return COLS[h%C
 function gi(n){return(n||'?').charAt(0).toUpperCase();}
 function esc(t){return(t||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function ft(ts){return new Date(ts).toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',hour12:true});}
+function fd(ts){const d=new Date(ts);return d.toLocaleDateString('en-IN');}
 function ck(a,b){return[a,b].sort().join('__');}
 function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
+function openModal(id){document.getElementById(id).classList.add('show');}
+function closeModal(id){document.getElementById(id).classList.remove('show');}
+document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('show');}));
 
 let ME=null,openWith=null,fTab='friends',aMode='login';
+let svStories=[],svIdx=0,svTimer=null;
 
+// ══ AUTH ══════════════════════════════════════
 function switchTab(m){
   aMode=m;
   document.getElementById('t1').classList.toggle('active',m==='login');
@@ -270,88 +510,414 @@ function switchTab(m){
   document.getElementById('regForm').style.display=m==='register'?'block':'none';
   document.getElementById('aerr').textContent='';
 }
-
 function chk(){
-  if(aMode==='login'){
-    document.getElementById('lbtn').disabled=!(document.getElementById('li').value.trim()&&document.getElementById('lp').value);
-  }else{
-    document.getElementById('rbtn').disabled=!(document.getElementById('rfn').value.trim()&&document.getElementById('run').value.trim()&&document.getElementById('rp').value.length>=4);
-  }
+  if(aMode==='login') document.getElementById('lbtn').disabled=!(document.getElementById('li').value.trim()&&document.getElementById('lp').value);
+  else document.getElementById('rbtn').disabled=!(document.getElementById('rfn').value.trim()&&document.getElementById('run').value.trim()&&document.getElementById('rp').value.length>=4);
 }
-
 async function doLogin(){
   const un=document.getElementById('li').value.trim().toLowerCase();
   const pw=document.getElementById('lp').value;
-  document.getElementById('lbtn').disabled=true;
-  document.getElementById('lbtn').textContent='Logging in...';
+  document.getElementById('lbtn').disabled=true;document.getElementById('lbtn').textContent='...';
   const{data,error}=await sb.from('users').select('*').eq('username',un).eq('password',pw).single();
-  document.getElementById('lbtn').disabled=false;
-  document.getElementById('lbtn').textContent='Login →';
+  document.getElementById('lbtn').disabled=false;document.getElementById('lbtn').textContent='Login →';
   if(error||!data){document.getElementById('aerr').textContent='❌ Username ya password galat hai!';return;}
   ME=data;localStorage.setItem('scMe',JSON.stringify(ME));go();
 }
-
 async function doRegister(){
   const fn=document.getElementById('rfn').value.trim();
   const un=document.getElementById('run').value.trim().toLowerCase().replace(/[^a-z0-9_.]/g,'');
   const pw=document.getElementById('rp').value;
-  document.getElementById('rbtn').disabled=true;
-  document.getElementById('rbtn').textContent='Creating...';
+  document.getElementById('rbtn').disabled=true;document.getElementById('rbtn').textContent='...';
   const{data:ex}=await sb.from('users').select('username').eq('username',un).maybeSingle();
   if(ex){document.getElementById('aerr').textContent='❌ Username pehle se liya hua hai!';document.getElementById('rbtn').disabled=false;document.getElementById('rbtn').textContent='Create Account →';return;}
-  const{data,error}=await sb.from('users').insert({fullname:fn,username:un,password:pw,friends:[]}).select().single();
-  document.getElementById('rbtn').disabled=false;
-  document.getElementById('rbtn').textContent='Create Account →';
-  if(error){document.getElementById('aerr').textContent='❌ Error: '+error.message;return;}
+  const{data,error}=await sb.from('users').insert({fullname:fn,username:un,password:pw,friends:[],bio:'',music:'',pic:'',is_private:false}).select().single();
+  document.getElementById('rbtn').disabled=false;document.getElementById('rbtn').textContent='Create Account →';
+  if(error){document.getElementById('aerr').textContent='❌ '+error.message;return;}
   ME=data;localStorage.setItem('scMe',JSON.stringify(ME));go();
 }
 
+// ══ APP ═══════════════════════════════════════
 function go(){
   document.getElementById('loadScreen').classList.remove('active');
   document.getElementById('authScreen').classList.remove('active');
   document.getElementById('mainScreen').classList.add('active');
-  rChats();rFriends();rProfile();updNBadge();
+  rHome();rChats();rFriends();rMyProfile();updNBadge();
   setInterval(async()=>{if(openWith)await rMsgs();else await rChats();await updNBadge();},5000);
 }
-
 function showPage(pid,idx){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById(pid).classList.add('active');
-  for(let i=0;i<4;i++)document.getElementById('n'+i).classList.toggle('active',i===idx);
-  if(pid==='profPage')rProfile();
+  for(let i=0;i<5;i++)document.getElementById('n'+i).classList.toggle('active',i===idx);
+  if(pid==='profPage')rMyProfile();
   if(pid==='friendsPage')rFriends();
   if(pid==='chatsPage')rChats();
+  if(pid==='homePage')rHome();
 }
 
+// ══ HOME (Stories + Posts) ═════════════════════
+async function rHome(){
+  await rStories();
+  await rPosts();
+}
+
+// ══ STORIES ════════════════════════════════════
+async function rStories(){
+  const el=document.getElementById('storiesRow');
+  // My add story button
+  let html=`<div class="story-item" onclick="openModal('addStoryModal')">
+    <div class="story-ring add"><div class="story-inner" style="background:${gc(ME.username)};font-size:22px">+</div></div>
+    <div class="story-name">Your Story</div>
+  </div>`;
+  // Get friends stories (last 24hrs)
+  const frs=ME.friends||[];
+  const since=new Date(Date.now()-24*60*60*1000).toISOString();
+  let allUsers=[ME.username,...frs];
+  const{data:stories}=await sb.from('stories').select('*').in('username',allUsers).gte('created_at',since).order('created_at',{ascending:false});
+  // Group by user
+  const byUser={};
+  (stories||[]).forEach(s=>{if(!byUser[s.username])byUser[s.username]=[];byUser[s.username].push(s);});
+  // Render story rings
+  for(const [uname,uStories] of Object.entries(byUser)){
+    const{data:u}=await sb.from('users').select('fullname,pic').eq('username',uname).single();
+    if(!u)continue;
+    const isMe=uname===ME.username;
+    const avHtml=u.pic?`<img src="${u.pic}" onerror="this.parentElement.textContent='${gi(u.fullname)}'">`:`${gi(u.fullname)}`;
+    html+=`<div class="story-item" onclick="viewStories('${uname}')">
+      <div class="story-ring"><div class="story-inner" style="background:${gc(uname)}">${avHtml}</div></div>
+      <div class="story-name">${isMe?'You':u.fullname.split(' ')[0]}</div>
+    </div>`;
+  }
+  el.innerHTML=html;
+}
+
+async function postStory(){
+  const img=document.getElementById('storyImg').value.trim();
+  const text=document.getElementById('storyText').value.trim();
+  const music=document.getElementById('storyMusic').value.trim();
+  if(!text&&!img){showToast('Kuch likho ya image add karo!');return;}
+  await sb.from('stories').insert({username:ME.username,img,text,music});
+  closeModal('addStoryModal');
+  document.getElementById('storyImg').value='';
+  document.getElementById('storyText').value='';
+  document.getElementById('storyMusic').value='';
+  showToast('✅ Story post ho gayi!');
+  rStories();
+}
+
+async function viewStories(uname){
+  const since=new Date(Date.now()-24*60*60*1000).toISOString();
+  const{data:stories}=await sb.from('stories').select('*').eq('username',uname).gte('created_at',since).order('created_at',{ascending:true});
+  if(!stories||!stories.length){showToast('Koi story nahi!');return;}
+  const{data:u}=await sb.from('users').select('fullname,pic').eq('username',uname).single();
+  svStories=stories;svIdx=0;
+  // Set user info
+  const avEl=document.getElementById('svAv');
+  if(u&&u.pic){avEl.innerHTML=`<img src="${u.pic}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" onerror="this.parentElement.textContent='${gi(u?.fullname||uname)}'">`;}
+  else{avEl.textContent=gi(u?.fullname||uname);avEl.style.background=gc(uname);}
+  document.getElementById('svUname').textContent=u?.fullname||uname;
+  // Progress bars
+  document.getElementById('svProgress').innerHTML=stories.map((_,i)=>`<div class="sv-bar"><div class="sv-fill" id="svf${i}"></div></div>`).join('');
+  showStoryAt(0);
+  document.getElementById('storyViewer').classList.add('open');
+}
+
+function showStoryAt(idx){
+  if(svTimer)clearTimeout(svTimer);
+  // Reset all fills
+  svStories.forEach((_,i)=>{
+    const f=document.getElementById('svf'+i);
+    if(f){f.style.transition='none';f.style.width=i<idx?'100%':'0%';}
+  });
+  const story=svStories[idx];
+  const body=document.getElementById('svBody');
+  let html='';
+  if(story.img)html+=`<img class="sv-img" src="${story.img}" onerror="this.style.display='none'">`;
+  if(story.text)html+=`<div class="sv-text">${esc(story.text)}</div>`;
+  if(story.music){
+    const ytMatch=story.music.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/);
+    if(ytMatch)html+=`<div class="sv-music">🎵 Playing music <a href="${story.music}" target="_blank" style="color:var(--accent)">Open</a></div>`;
+  }
+  body.innerHTML=html;
+  document.getElementById('svTime').textContent=ft(story.created_at);
+  // Animate progress
+  setTimeout(()=>{
+    const f=document.getElementById('svf'+idx);
+    if(f){f.style.transition='width 5s linear';f.style.width='100%';}
+  },50);
+  svIdx=idx;
+  svTimer=setTimeout(()=>{
+    if(idx+1<svStories.length)showStoryAt(idx+1);
+    else closeStory();
+  },5000);
+}
+
+function closeStory(){
+  if(svTimer)clearTimeout(svTimer);
+  document.getElementById('storyViewer').classList.remove('open');
+}
+
+// ══ POSTS ══════════════════════════════════════
+async function rPosts(){
+  const feed=document.getElementById('postsFeed');
+  const frs=[ME.username,...(ME.friends||[])];
+  const{data:posts}=await sb.from('posts').select('*').in('username',frs).order('created_at',{ascending:false}).limit(20);
+  if(!posts||!posts.length){
+    feed.innerHTML=`<div class="empty"><div class="eico">📸</div><p>Koi post nahi abhi</p><small>Friends add karo ya post banao!</small></div>
+    <div style="padding:16px;"><button onclick="openModal('addPostModal')" style="width:100%;padding:13px;background:var(--accent);color:#000;border:none;border-radius:12px;font-family:'Inter',sans-serif;font-weight:800;font-size:14px;cursor:pointer;">+ New Post</button></div>`;
+    return;
+  }
+  // Get user info for all posters
+  const unames=[...new Set(posts.map(p=>p.username))];
+  const{data:users}=await sb.from('users').select('fullname,pic,username').in('username',unames);
+  const uMap={};(users||[]).forEach(u=>uMap[u.username]=u);
+  let html=`<div style="padding:12px 14px;"><button onclick="openModal('addPostModal')" style="width:100%;padding:11px;background:var(--surface);color:var(--muted);border:1px solid var(--border);border-radius:12px;font-family:'Inter',sans-serif;font-weight:600;font-size:13px;cursor:pointer;text-align:left;">📝 Apni memory share karo...</button></div>`;
+  posts.forEach(p=>{
+    const u=uMap[p.username]||{fullname:p.username,pic:''};
+    const avHtml=u.pic?`<img src="${u.pic}" onerror="this.parentElement.innerHTML='${gi(u.fullname)}'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`:`${gi(u.fullname)}`;
+    const likes=p.likes||[];
+    const liked=likes.includes(ME.username);
+    html+=`<div class="post">
+      <div class="post-header">
+        <div class="post-user" onclick="viewProfile('${p.username}')">
+          <div class="post-av"><div class="post-av-inner" style="background:${gc(p.username)}">${avHtml}</div></div>
+          <div><div class="post-uname">${u.fullname}</div><div class="post-time">@${p.username}</div></div>
+        </div>
+        ${p.username===ME.username?`<span style="cursor:pointer;color:var(--red);font-size:13px" onclick="deletePost('${p.id}')">🗑️</span>`:''}
+      </div>
+      ${p.img?`<img class="post-img" src="${p.img}" onerror="this.style.display='none'">`:''}
+      ${!p.img&&p.caption?`<div class="post-no-img"><p>${esc(p.caption)}</p></div>`:''}
+      <div class="post-actions">
+        <div class="post-acts-left">
+          <div class="post-act ${liked?'liked':''}" onclick="likePost('${p.id}',${liked})"><span class="ico">${liked?'❤️':'🤍'}</span>${likes.length}</div>
+          <div class="post-act"><span class="ico">💬</span></div>
+        </div>
+        <div style="font-size:11px;color:var(--muted)">${fd(p.created_at)}</div>
+      </div>
+      ${p.img&&p.caption?`<div class="post-caption"><b>${u.fullname}</b>${esc(p.caption)}</div>`:''}
+    </div>`;
+  });
+  feed.innerHTML=html;
+}
+
+async function submitPost(){
+  const img=document.getElementById('postImg').value.trim();
+  const caption=document.getElementById('postCaption').value.trim();
+  if(!caption&&!img){showToast('Caption ya image daalo!');return;}
+  await sb.from('posts').insert({username:ME.username,img,caption,likes:[]});
+  closeModal('addPostModal');
+  document.getElementById('postImg').value='';
+  document.getElementById('postCaption').value='';
+  showToast('✅ Post ho gayi!');
+  rPosts();
+}
+
+async function likePost(postId,isLiked){
+  const{data:post}=await sb.from('posts').select('likes').eq('id',postId).single();
+  if(!post)return;
+  let likes=post.likes||[];
+  if(isLiked)likes=likes.filter(u=>u!==ME.username);
+  else if(!likes.includes(ME.username))likes.push(ME.username);
+  await sb.from('posts').update({likes}).eq('id',postId);
+  rPosts();
+}
+
+async function deletePost(postId){
+  await sb.from('posts').delete().eq('id',postId);
+  showToast('Post delete ho gayi!');
+  rPosts();
+}
+
+// ══ VIEW PROFILE ══════════════════════════════
+async function viewProfile(uname){
+  if(uname===ME.username){showPage('profPage',4);return;}
+  const{data:u}=await sb.from('users').select('*').eq('username',uname).single();
+  if(!u)return;
+  const isFr=(ME.friends||[]).includes(uname);
+  const{data:posts}=await sb.from('posts').select('*').eq('username',uname).order('created_at',{ascending:false});
+  // If private and not friend
+  if(u.is_private&&!isFr){
+    document.getElementById('pvContent').innerHTML=`
+      <div class="prof-cover"></div>
+      <div style="position:relative"><div class="prof-avbig-wrap"><div class="prof-avbig"><div class="prof-avbig-inner" style="background:${gc(uname)}">${u.pic?`<img src="${u.pic}">`:`${gi(u.fullname)}`}</div></div></div></div>
+      <div class="prof-info">
+        <div class="prof-fname">${u.fullname}</div>
+        <div class="prof-uname">@${u.username}</div>
+        <div class="prof-badge private">🔒 Private Account</div>
+        <p style="font-size:13px;color:var(--muted);margin-top:8px">Is account ko follow karo posts dekhne ke liye</p>
+      </div>`;
+  } else {
+    const postsHtml=(posts||[]).map(p=>p.img?`<div class="prof-grid-item"><img src="${p.img}" onerror="this.style.display='none'"></div>`:`<div class="prof-grid-item" style="font-size:14px;color:var(--muted);padding:8px;word-break:break-word">${esc((p.caption||'').substring(0,40))}</div>`).join('');
+    document.getElementById('pvContent').innerHTML=`
+      <div class="prof-cover" style="background:linear-gradient(135deg,${gc(uname)},#0084ff)"></div>
+      <div style="position:relative"><div class="prof-avbig-wrap"><div class="prof-avbig"><div class="prof-avbig-inner" style="background:${gc(uname)}">${u.pic?`<img src="${u.pic}">`:`${gi(u.fullname)}`}</div></div></div></div>
+      <div class="prof-info">
+        <div class="prof-fname">${u.fullname}</div>
+        <div class="prof-uname">@${u.username}</div>
+        ${u.bio?`<div class="prof-bio">${esc(u.bio)}</div>`:''}
+        ${u.music?`<div class="prof-music">🎵 <a href="${u.music}" target="_blank" style="color:var(--accent)">Bio Music</a></div>`:''}
+        <div class="prof-badge ${u.is_private?'private':'public'}">${u.is_private?'🔒 Private':'🌍 Public'}</div>
+        <div class="prof-stats">
+          <div class="ps"><span class="ps-num">${(u.friends||[]).length}</span><span class="ps-lbl">Friends</span></div>
+          <div class="ps"><span class="ps-num">${(posts||[]).length}</span><span class="ps-lbl">Posts</span></div>
+        </div>
+        <div class="prof-btns">
+          ${isFr
+            ?`<button class="pb p" onclick="openChat('${uname}');closeProfileView()">💬 Message</button><button class="pb o" onclick="remFriend('${uname}');closeProfileView()">Remove</button>`
+            :`<button class="pb p" onclick="sndReq('${uname}')">➕ Add Friend</button>`
+          }
+        </div>
+      </div>
+      ${postsHtml?`<div class="prof-grid">${postsHtml}</div>`:'<div style="text-align:center;padding:30px;color:var(--muted)">Koi post nahi</div>'}`;
+  }
+  document.getElementById('pvTitle').textContent=u.fullname;
+  document.getElementById('profileViewPage').classList.add('open');
+}
+function closeProfileView(){document.getElementById('profileViewPage').classList.remove('open');}
+
+// ══ MY PROFILE ════════════════════════════════
+async function rMyProfile(){
+  if(!ME)return;
+  const{data:fresh}=await sb.from('users').select('*').eq('username',ME.username).single();
+  if(fresh){ME=fresh;localStorage.setItem('scMe',JSON.stringify(ME));}
+  const{data:posts}=await sb.from('posts').select('*').eq('username',ME.username).order('created_at',{ascending:false});
+  const postsHtml=(posts||[]).map(p=>p.img?`<div class="prof-grid-item"><img src="${p.img}" onerror="this.parentElement.innerHTML='📷'"></div>`:`<div class="prof-grid-item" style="font-size:12px;color:var(--muted);padding:6px;word-break:break-word">${esc((p.caption||'').substring(0,50))}</div>`).join('');
+  document.getElementById('myProfWrap').innerHTML=`
+    <div class="prof-cover" style="background:linear-gradient(135deg,#00c896,#0084ff);position:relative;">
+      <div class="prof-avbig-wrap"><div class="prof-avbig"><div class="prof-avbig-inner" style="background:${gc(ME.username)}">${ME.pic?`<img src="${ME.pic}">`:`${gi(ME.fullname)}`}</div></div></div>
+    </div>
+    <div class="prof-info">
+      <div class="prof-fname">${ME.fullname}</div>
+      <div class="prof-uname">@${ME.username}</div>
+      ${ME.bio?`<div class="prof-bio">${esc(ME.bio)}</div>`:''}
+      ${ME.music?`<div class="prof-music">🎵 <a href="${ME.music}" target="_blank" style="color:var(--accent)">My Music</a></div>`:''}
+      <div class="prof-badge ${ME.is_private?'private':'public'}">${ME.is_private?'🔒 Private':'🌍 Public'}</div>
+      <div class="prof-stats">
+        <div class="ps"><span class="ps-num">${(ME.friends||[]).length}</span><span class="ps-lbl">Friends</span></div>
+        <div class="ps"><span class="ps-num">${(posts||[]).length}</span><span class="ps-lbl">Posts</span></div>
+      </div>
+      <div class="prof-btns">
+        <button class="pb p" onclick="openEditProfile()">✏️ Edit Profile</button>
+        <button class="pb o" onclick="openModal('addPostModal')">+ Post</button>
+      </div>
+    </div>
+    ${postsHtml?`<div class="prof-grid">${postsHtml}</div>`:'<div style="text-align:center;padding:30px;color:var(--muted)">Koi post nahi abhi</div>'}
+  `;
+}
+
+// ══ SETTINGS ══════════════════════════════════
+function openSettings(){
+  document.getElementById('settingsContent').innerHTML=`
+    <div class="settings-section">
+      <div class="settings-title">ACCOUNT</div>
+      <div class="settings-item" onclick="openEditProfile()">
+        <div class="si-left"><span class="si-icon">✏️</span><div class="si-text"><h4>Edit Profile</h4><p>Name, username, bio, music, pic</p></div></div>
+        <span class="si-arrow">›</span>
+      </div>
+      <div class="settings-item" onclick="openModal('changePwModal')">
+        <div class="si-left"><span class="si-icon">🔐</span><div class="si-text"><h4>Change Password</h4><p>Apna password badlo</p></div></div>
+        <span class="si-arrow">›</span>
+      </div>
+    </div>
+    <div class="settings-section">
+      <div class="settings-title">PRIVACY</div>
+      <div class="settings-item">
+        <div class="si-left"><span class="si-icon">${ME.is_private?'🔒':'🌍'}</span><div class="si-text"><h4>Private Account</h4><p>${ME.is_private?'Sirf friends dekh sakte hain':'Sab dekh sakte hain'}</p></div></div>
+        <div class="toggle ${ME.is_private?'on':''}" onclick="togglePrivate(this)"></div>
+      </div>
+    </div>
+    <div class="settings-section">
+      <div class="settings-title">MORE</div>
+      <div class="settings-item" onclick="showPage('friendsPage',2);closeSettings()">
+        <div class="si-left"><span class="si-icon">👥</span><div class="si-text"><h4>Friends</h4><p>Apne friends dekho</p></div></div>
+        <span class="si-arrow">›</span>
+      </div>
+      <div class="settings-item" onclick="showPage('searchPage',3);closeSettings()">
+        <div class="si-left"><span class="si-icon">🔍</span><div class="si-text"><h4>Find Friends</h4><p>Naye dost dhundho</p></div></div>
+        <span class="si-arrow">›</span>
+      </div>
+    </div>
+    <button class="logout-btn" onclick="logout()">🚪 Logout</button>`;
+  document.getElementById('settingsPage').classList.add('open');
+}
+function closeSettings(){document.getElementById('settingsPage').classList.remove('open');}
+
+async function togglePrivate(el){
+  el.classList.toggle('on');
+  const isPrivate=el.classList.contains('on');
+  await sb.from('users').update({is_private:isPrivate}).eq('username',ME.username);
+  ME.is_private=isPrivate;
+  localStorage.setItem('scMe',JSON.stringify(ME));
+  showToast(isPrivate?'🔒 Account private ho gaya!':'🌍 Account public ho gaya!');
+  openSettings();
+}
+
+function openEditProfile(){
+  document.getElementById('epName').value=ME.fullname||'';
+  document.getElementById('epUsername').value=ME.username||'';
+  document.getElementById('epBio').value=ME.bio||'';
+  document.getElementById('epMusic').value=ME.music||'';
+  document.getElementById('epPic').value=ME.pic||'';
+  openModal('editProfileModal');
+}
+
+async function saveProfile(){
+  const name=document.getElementById('epName').value.trim();
+  const uname=document.getElementById('epUsername').value.trim().toLowerCase().replace(/[^a-z0-9_.]/g,'');
+  const bio=document.getElementById('epBio').value.trim();
+  const music=document.getElementById('epMusic').value.trim();
+  const pic=document.getElementById('epPic').value.trim();
+  if(!name||!uname){showToast('Name aur username zaroori hai!');return;}
+  // Check if username taken by another user
+  if(uname!==ME.username){
+    const{data:ex}=await sb.from('users').select('username').eq('username',uname).maybeSingle();
+    if(ex){showToast('❌ Username pehle se liya hua hai!');return;}
+  }
+  await sb.from('users').update({fullname:name,username:uname,bio,music,pic}).eq('username',ME.username);
+  ME.fullname=name;ME.username=uname;ME.bio=bio;ME.music=music;ME.pic=pic;
+  localStorage.setItem('scMe',JSON.stringify(ME));
+  closeModal('editProfileModal');
+  showToast('✅ Profile update ho gayi!');
+  rMyProfile();
+}
+
+async function changePassword(){
+  const old=document.getElementById('oldPw').value;
+  const nw=document.getElementById('newPw').value;
+  const conf=document.getElementById('confPw').value;
+  const err=document.getElementById('pwErr');
+  if(old!==ME.password){err.textContent='❌ Purana password galat hai!';return;}
+  if(nw.length<4){err.textContent='❌ Naya password min 4 characters!';return;}
+  if(nw!==conf){err.textContent='❌ Passwords match nahi kar rahe!';return;}
+  await sb.from('users').update({password:nw}).eq('username',ME.username);
+  ME.password=nw;localStorage.setItem('scMe',JSON.stringify(ME));
+  closeModal('changePwModal');
+  document.getElementById('oldPw').value='';document.getElementById('newPw').value='';document.getElementById('confPw').value='';
+  showToast('✅ Password change ho gaya!');
+}
+
+// ══ CHATS ═════════════════════════════════════
 async function rChats(f=''){
   if(!ME)return;
   const el=document.getElementById('chatList');
   const frs=ME.friends||[];
-  if(!frs.length){el.innerHTML=`<div class="empty"><div class="eico">💬</div><p>Koi chat nahi abhi</p><small>Dost add karo aur chat shuru karo!</small></div>`;return;}
+  if(!frs.length){el.innerHTML=`<div class="empty"><div class="eico">💬</div><p>Koi chat nahi</p><small>Friends add karo!</small></div>`;return;}
   const{data:users}=await sb.from('users').select('*').in('username',frs);
   if(!users||!users.length)return;
   const filtered=users.filter(u=>!f||u.fullname.toLowerCase().includes(f.toLowerCase())||u.username.includes(f.toLowerCase()));
-  const chatItems=await Promise.all(filtered.map(async u=>{
+  const items=await Promise.all(filtered.map(async u=>{
     const key=ck(ME.username,u.username);
     const{data:msgs}=await sb.from('messages').select('*').eq('chat_key',key).order('created_at',{ascending:false}).limit(1);
     const last=msgs&&msgs[0];
     const{count}=await sb.from('messages').select('*',{count:'exact',head:true}).eq('chat_key',key).eq('is_read',false).neq('from_user',ME.username);
     return{u,last,unread:count||0};
   }));
-  el.innerHTML=chatItems.map(({u,last,unread})=>`
+  el.innerHTML=items.map(({u,last,unread})=>`
     <div class="ci ${unread?'unread':''}" onclick="openChat('${u.username}')">
-      <div class="av" style="background:${gc(u.username)}">${gi(u.fullname)}<div class="odot"></div></div>
-      <div class="ci-info">
-        <div class="ci-name">${u.fullname}</div>
-        <div class="ci-prev">${last?(last.from_user===ME.username?'Aap: ':'')+esc(last.text):'👋 Say hello!'}</div>
-      </div>
-      <div class="ci-meta">
-        <div class="ci-time">${last?ft(last.created_at):''}</div>
-        ${unread?`<div class="ci-unread">${unread}</div>`:''}
-      </div>
+      <div class="av" style="background:${gc(u.username)}">${u.pic?`<img src="${u.pic}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" onerror="this.parentElement.textContent='${gi(u.fullname)}'">`:`${gi(u.fullname)}`}<div class="odot"></div></div>
+      <div class="ci-info"><div class="ci-name">${u.fullname}</div><div class="ci-prev">${last?(last.from_user===ME.username?'Aap: ':'')+esc(last.text):'👋 Say hello!'}</div></div>
+      <div class="ci-meta"><div class="ci-time">${last?ft(last.created_at):''}</div>${unread?`<div class="ci-unread">${unread}</div>`:''}</div>
     </div>`).join('');
 }
-
 function filterChats(q){rChats(q);}
 
 async function openChat(uid){
@@ -359,7 +925,8 @@ async function openChat(uid){
   if(!fr)return;
   openWith=uid;
   const cwav=document.getElementById('cwAv');
-  cwav.textContent=gi(fr.fullname);cwav.style.background=gc(uid);
+  if(fr.pic){cwav.innerHTML=`<img src="${fr.pic}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;cwav.style.background='transparent';}
+  else{cwav.textContent=gi(fr.fullname);cwav.style.background=gc(uid);}
   document.getElementById('cwName').textContent=fr.fullname;
   document.getElementById('cwStat').textContent='@'+fr.username;
   await rMsgs();
@@ -367,7 +934,6 @@ async function openChat(uid){
   await sb.from('messages').update({is_read:true}).eq('chat_key',key).neq('from_user',ME.username);
   document.getElementById('chatWin').classList.add('open');
 }
-
 async function rMsgs(){
   if(!openWith||!ME)return;
   const key=ck(ME.username,openWith);
@@ -385,7 +951,6 @@ async function rMsgs(){
   el.innerHTML=html;
   if(wasBottom)el.scrollTop=el.scrollHeight;
 }
-
 async function sendMsg(){
   const inp=document.getElementById('minp');
   const txt=inp.value.trim();
@@ -393,50 +958,45 @@ async function sendMsg(){
   inp.value='';
   const key=ck(ME.username,openWith);
   await sb.from('messages').insert({chat_key:key,from_user:ME.username,text:txt,is_read:false});
-  await rMsgs();
-  await rChats();
+  await rMsgs();await rChats();
 }
-
 function mkey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg();}}
 function closeChat(){document.getElementById('chatWin').classList.remove('open');openWith=null;rChats();}
 
+// ══ FRIENDS ═══════════════════════════════════
 function switchFTab(t){
   fTab=t;
   document.getElementById('ft1').classList.toggle('active',t==='friends');
   document.getElementById('ft2').classList.toggle('active',t==='requests');
   rFriends();
 }
-
 async function rFriends(){
   if(!ME)return;
   const el=document.getElementById('friendsList');
   if(fTab==='friends'){
     const frs=ME.friends||[];
     document.getElementById('fcnt').textContent=frs.length?`(${frs.length})`:'';
-    if(!frs.length){el.innerHTML=`<div class="empty"><div class="eico">👥</div><p>Koi dost nahi abhi</p><small>Search karke add karo!</small></div>`;return;}
+    if(!frs.length){el.innerHTML=`<div class="empty"><div class="eico">👥</div><p>Koi dost nahi</p></div>`;return;}
     const{data:users}=await sb.from('users').select('*').in('username',frs);
-    if(!users){el.innerHTML='';return;}
-    el.innerHTML=users.map(u=>`
+    el.innerHTML=(users||[]).map(u=>`
       <div class="fi">
-        <div class="av" style="background:${gc(u.username)};width:44px;height:44px;font-size:16px">${gi(u.fullname)}</div>
-        <div class="fi-info"><div class="fi-name">${u.fullname}</div><div class="fi-id">@${u.username}</div></div>
+        <div class="av" style="background:${gc(u.username)};width:44px;height:44px;font-size:16px;cursor:pointer" onclick="viewProfile('${u.username}')">${u.pic?`<img src="${u.pic}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`:`${gi(u.fullname)}`}</div>
+        <div class="fi-info" style="cursor:pointer" onclick="viewProfile('${u.username}')"><div class="fi-name">${u.fullname}</div><div class="fi-id">@${u.username}</div></div>
         <div class="fi-acts">
-          <button class="fb b" onclick="openChat('${u.username}');showPage('chatsPage',0)">💬</button>
+          <button class="fb b" onclick="openChat('${u.username}');showPage('chatsPage',1)">💬</button>
           <button class="fb r" onclick="remFriend('${u.username}')">✕</button>
         </div>
       </div>`).join('');
-  }else{
+  } else {
     const{data:reqs}=await sb.from('friend_requests').select('*').eq('to_user',ME.username).eq('status','pending');
     const bd=document.getElementById('rbdg');
     bd.textContent=reqs?reqs.length:0;bd.style.display=reqs&&reqs.length?'inline':'none';
     if(!reqs||!reqs.length){el.innerHTML=`<div class="empty"><div class="eico">📨</div><p>Koi request nahi</p></div>`;return;}
-    const fromUsers=reqs.map(r=>r.from_user);
-    const{data:users}=await sb.from('users').select('*').in('username',fromUsers);
+    const{data:users}=await sb.from('users').select('*').in('username',reqs.map(r=>r.from_user));
     el.innerHTML=reqs.map(r=>{
-      const s=users&&users.find(u=>u.username===r.from_user);
-      if(!s)return'';
+      const s=(users||[]).find(u=>u.username===r.from_user);if(!s)return'';
       return`<div class="fi">
-        <div class="av" style="background:${gc(r.from_user)};width:44px;height:44px;font-size:16px">${gi(s.fullname)}</div>
+        <div class="av" style="background:${gc(r.from_user)};width:44px;height:44px;font-size:16px">${s.pic?`<img src="${s.pic}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`:`${gi(s.fullname)}`}</div>
         <div class="fi-info"><div class="fi-name">${s.fullname}</div><div class="fi-id">@${s.username}</div></div>
         <div class="fi-acts">
           <button class="fb g" onclick="accReq('${r.from_user}','${r.id}')">✓</button>
@@ -446,16 +1006,14 @@ async function rFriends(){
     }).join('');
   }
 }
-
 async function remFriend(uid){
   const myF=(ME.friends||[]).filter(f=>f!==uid);
   await sb.from('users').update({friends:myF}).eq('username',ME.username);
   ME.friends=myF;localStorage.setItem('scMe',JSON.stringify(ME));
   const{data:them}=await sb.from('users').select('friends').eq('username',uid).single();
-  if(them){await sb.from('users').update({friends:(them.friends||[]).filter(f=>f!==ME.username)}).eq('username',uid);}
+  if(them)await sb.from('users').update({friends:(them.friends||[]).filter(f=>f!==ME.username)}).eq('username',uid);
   rFriends();rChats();showToast('Friend remove ho gaya');
 }
-
 async function accReq(fromId,reqId){
   await sb.from('friend_requests').update({status:'accepted'}).eq('id',reqId);
   const myF=[...(ME.friends||[])];
@@ -463,25 +1021,21 @@ async function accReq(fromId,reqId){
   await sb.from('users').update({friends:myF}).eq('username',ME.username);
   ME.friends=myF;localStorage.setItem('scMe',JSON.stringify(ME));
   const{data:them}=await sb.from('users').select('friends').eq('username',fromId).single();
-  if(them){
-    const thF=[...(them.friends||[])];
-    if(!thF.includes(ME.username))thF.push(ME.username);
-    await sb.from('users').update({friends:thF}).eq('username',fromId);
-  }
+  if(them){const thF=[...(them.friends||[])];if(!thF.includes(ME.username))thF.push(ME.username);await sb.from('users').update({friends:thF}).eq('username',fromId);}
   await sb.from('notifications').insert({to_user:fromId,text:`<b>${ME.fullname}</b> ne aapki friend request accept kar li! 🎉`,is_read:false});
   rFriends();rChats();updNBadge();showToast('✅ Friend added!');
 }
-
 async function rejReq(reqId){
   await sb.from('friend_requests').update({status:'rejected'}).eq('id',reqId);
   rFriends();showToast('Request reject ho gayi');
 }
 
+// ══ SEARCH ════════════════════════════════════
 async function doSearch(q){
   const el=document.getElementById('sResults');
-  if(!q.trim()){el.innerHTML=`<div class="sh"><div class="sico">🔎</div><p style="font-size:14px;font-weight:600;margin-bottom:4px">Dost ko dhundho</p><small style="color:var(--muted);font-size:12px">Username ya naam se search karo</small></div>`;return;}
+  if(!q.trim()){el.innerHTML=`<div style="text-align:center;padding:40px;color:var(--muted)"><div style="font-size:44px;margin-bottom:10px">🔎</div><p style="font-size:14px;font-weight:600">Dost ko dhundho</p></div>`;return;}
   const{data:res}=await sb.from('users').select('*').or(`username.ilike.%${q}%,fullname.ilike.%${q}%`).neq('username',ME.username).limit(20);
-  if(!res||!res.length){el.innerHTML=`<div class="sh"><div class="sico">😕</div><p style="font-size:14px;font-weight:600">"${q}" koi nahi mila</p></div>`;return;}
+  if(!res||!res.length){el.innerHTML=`<div style="text-align:center;padding:40px;color:var(--muted)"><div style="font-size:44px">😕</div><p style="font-size:14px;font-weight:600">"${q}" nahi mila</p></div>`;return;}
   const{data:sentR}=await sb.from('friend_requests').select('*').eq('from_user',ME.username).eq('status','pending');
   const{data:recvR}=await sb.from('friend_requests').select('*').eq('to_user',ME.username).eq('status','pending');
   el.innerHTML=res.map(u=>{
@@ -489,93 +1043,69 @@ async function doSearch(q){
     const sentOut=sentR&&sentR.some(r=>r.to_user===u.username);
     const sentIn=recvR&&recvR.some(r=>r.from_user===u.username);
     let btn='';
-    if(isFr)btn=`<button class="fb b" onclick="openChat('${u.username}');showPage('chatsPage',0)">💬</button>`;
+    if(isFr)btn=`<button class="fb b" onclick="openChat('${u.username}');showPage('chatsPage',1)">💬</button>`;
     else if(sentOut)btn=`<button class="fb gr" disabled>⏳</button>`;
-    else if(sentIn)btn=`<button class="fb g" onclick="accReqByUser('${u.username}')">✓ Accept</button>`;
-    else btn=`<button class="fb g" onclick="sndReq('${u.username}')">➕ Add</button>`;
+    else if(sentIn)btn=`<button class="fb g" onclick="accReqByUser('${u.username}')">✓</button>`;
+    else btn=`<button class="fb g" onclick="sndReq('${u.username}')">➕</button>`;
     return`<div class="sr-item">
-      <div class="av" style="background:${gc(u.username)};width:46px;height:46px;font-size:17px">${gi(u.fullname)}</div>
-      <div class="sr-info"><div class="sr-name">${u.fullname}</div><div class="sr-user">@${u.username}</div></div>
+      <div class="av" style="background:${gc(u.username)};width:46px;height:46px;font-size:17px;cursor:pointer" onclick="viewProfile('${u.username}')">${u.pic?`<img src="${u.pic}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`:`${gi(u.fullname)}`}</div>
+      <div class="sr-info" style="cursor:pointer" onclick="viewProfile('${u.username}')"><div class="sr-name">${u.fullname}</div><div class="sr-user">@${u.username}${u.is_private?' 🔒':''}</div></div>
       ${btn}
     </div>`;
   }).join('');
 }
-
 async function sndReq(to){
   const{data:ex}=await sb.from('friend_requests').select('id').eq('from_user',ME.username).eq('to_user',to).eq('status','pending').maybeSingle();
   if(ex){showToast('Request pehle se bheji!');return;}
   await sb.from('friend_requests').insert({from_user:ME.username,to_user:to,status:'pending'});
   await sb.from('notifications').insert({to_user:to,text:`<b>${ME.fullname}</b> ne aapko friend request bheji! 👋`,is_read:false});
-  doSearch(document.getElementById('sinp').value);
-  showToast('✅ Request bheji!');
+  doSearch(document.getElementById('sinp').value);showToast('✅ Request bheji!');
 }
-
 async function accReqByUser(fromUser){
   const{data:req}=await sb.from('friend_requests').select('id').eq('from_user',fromUser).eq('to_user',ME.username).eq('status','pending').maybeSingle();
   if(req)await accReq(fromUser,req.id);
 }
 
-async function rProfile(){
-  if(!ME)return;
-  const{data:fresh}=await sb.from('users').select('*').eq('username',ME.username).single();
-  if(fresh){ME=fresh;localStorage.setItem('scMe',JSON.stringify(ME));}
-  const frs=(ME.friends||[]).length;
-  const{count:reqs}=await sb.from('friend_requests').select('*',{count:'exact',head:true}).eq('to_user',ME.username).eq('status','pending');
-  document.getElementById('profWrap').innerHTML=`
-    <div class="prof-cover" style="position:relative">
-      <div class="prof-avbig" style="background:${gc(ME.username)}">${gi(ME.fullname)}</div>
-    </div>
-    <div class="prof-info">
-      <div class="prof-fname">${ME.fullname}</div>
-      <div class="prof-uname">@${ME.username}</div>
-      <div class="prof-stats">
-        <div class="ps"><span class="ps-num">${frs}</span><span class="ps-lbl">Friends</span></div>
-        <div class="ps"><span class="ps-num">${reqs||0}</span><span class="ps-lbl">Requests</span></div>
-      </div>
-      <div class="prof-btns">
-        <button class="pb p" onclick="showPage('searchPage',2)">🔍 Find Friends</button>
-        <button class="pb o" onclick="showPage('friendsPage',1)">👥 Friends</button>
-      </div>
-    </div>
-    <button class="logout-btn" onclick="logout()">🚪 Logout</button>`;
-}
-
-function logout(){
-  ME=null;localStorage.removeItem('scMe');
-  document.getElementById('mainScreen').classList.remove('active');
-  document.getElementById('authScreen').classList.add('active');
-  document.getElementById('li').value='';document.getElementById('lp').value='';
-  document.getElementById('aerr').textContent='';document.getElementById('lbtn').disabled=true;
-  showToast('Logout ho gaye!');
-}
-
+// ══ NOTIFICATIONS ═════════════════════════════
 async function updNBadge(){
   if(!ME)return;
   const{count}=await sb.from('notifications').select('*',{count:'exact',head:true}).eq('to_user',ME.username).eq('is_read',false);
   const bd=document.getElementById('nbadge');
   bd.textContent=count||0;bd.style.display=count?'flex':'none';
 }
-
 async function openNotif(){
   if(!ME)return;
   const{data:notifs}=await sb.from('notifications').select('*').eq('to_user',ME.username).order('created_at',{ascending:false}).limit(30);
   const el=document.getElementById('notifList');
-  if(!notifs||!notifs.length){el.innerHTML=`<div class="empty"><div class="eico">🔔</div><p>Koi notification nahi</p></div>`;}
-  else{el.innerHTML=notifs.map(n=>`<div class="ni-item ${n.is_read?'':'unread'}"><span style="font-size:22px">🔔</span><div style="flex:1"><div class="ni-text">${n.text}</div><div class="ni-time">${ft(n.created_at)}</div></div></div>`).join('');}
+  if(!notifs||!notifs.length)el.innerHTML=`<div class="empty"><div class="eico">🔔</div><p>Koi notification nahi</p></div>`;
+  else el.innerHTML=notifs.map(n=>`<div class="ni-item ${n.is_read?'':'unread'}"><span style="font-size:20px">🔔</span><div style="flex:1"><div class="ni-text">${n.text}</div><div class="ni-time">${ft(n.created_at)}</div></div></div>`).join('');
   await sb.from('notifications').update({is_read:true}).eq('to_user',ME.username);
   updNBadge();
   document.getElementById('notifPanel').classList.add('open');
 }
 function closeNotif(){document.getElementById('notifPanel').classList.remove('open');}
 
+// ══ LOGOUT ════════════════════════════════════
+function logout(){
+  ME=null;localStorage.removeItem('scMe');
+  document.getElementById('mainScreen').classList.remove('active');
+  document.getElementById('authScreen').classList.add('active');
+  document.getElementById('settingsPage').classList.remove('open');
+  document.getElementById('li').value='';document.getElementById('lp').value='';
+  document.getElementById('aerr').textContent='';document.getElementById('lbtn').disabled=true;
+  showToast('Logout ho gaye!');
+}
+
+// ══ INIT ══════════════════════════════════════
 async function init(){
+  // Create tables if needed (SQL already run)
   const saved=localStorage.getItem('scMe');
   if(saved){
     ME=JSON.parse(saved);
     const{data}=await sb.from('users').select('*').eq('username',ME.username).single();
     if(data){ME=data;localStorage.setItem('scMe',JSON.stringify(ME));go();}
     else{localStorage.removeItem('scMe');showAuth();}
-  }else{showAuth();}
+  }else showAuth();
 }
 function showAuth(){
   document.getElementById('loadScreen').classList.remove('active');
